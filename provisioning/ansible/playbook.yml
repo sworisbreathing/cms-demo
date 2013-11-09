@@ -24,6 +24,10 @@
       apt: pkg=docker state=latest
       sudo: yes
 
+    - name: ensure git is installed
+      apt: pkg=git state=latest
+      sudo: yes
+
   handlers:
     - name: Restart vm
       command: /sbin/reboot
