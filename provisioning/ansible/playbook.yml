@@ -6,17 +6,28 @@
       apt: update_cache=yes cache_valid_time=86400
       sudo: yes
 
-    - name: enable ppa repositories
-      apt: pkg=software-properties-common state=latest
+    - name: install python-pycurl
       apt: pkg=python-pycurl state=latest
       sudo: yes
 
+    - name: add docker repository key
+      apt_key: url=https://get.docker.io/gpg state=present
+      sudo: yes
+
     - name: add docker repository
-      apt_repository: repo='ppa:dotcloud/lxc-docker' state=present
+      apt_repository: repo='deb http://get.docker.io/ubuntu docker main' state=present
       sudo: yes
 
     - name: ensure docker is installed
       apt: pkg=lxc-docker state=latest
+      sudo: yes
+
+    - name: create docker group
+      group: name=docker state=present
+      sudo: yes
+
+    - name: add vagrant user to docker group
+      user: name=vagrant groups=docker append=yes
       sudo: yes
 
     ## Commented out because buildroot is not available via apt.
