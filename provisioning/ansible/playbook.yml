@@ -6,13 +6,18 @@
       apt: update_cache=yes cache_valid_time=3600
       sudo: yes
 
-    - name: upgrade linux kernel to 3.8 (docker recommended)
-      apt: pkg=linux-image-generic-lts-raring
+    - name: enable ppa repositories
+      apt: pkg=software-properties-common state=latest
+      apt: pkg=python-pycurl state=latest
       sudo: yes
-      with_items:
-        - linux-headers-generic-lts-raring
-      notify: 
-        - Restart vm
+
+    - name: add docker repository
+      apt_repository: repo='ppa:dotcloud/lxc-docker' state=present
+      sudo: yes
+
+    - name: ensure docker is installed
+      apt: pkg=lxc-docker state=latest
+      sudo: yes
 
     ## Commented out because buildroot is not available via apt.
     ## TODO: find an alternative method for installing buildroot.
@@ -20,12 +25,12 @@
     #   apt: pkg=buildroot=2013.08.1 state=present
     #   sudo: yes
 
-    - name: ensure docker is installed
-      apt: pkg=docker state=latest
-      sudo: yes
-
     - name: ensure git is installed
       apt: pkg=git state=latest
+      sudo: yes
+
+    - name: ensure vim is installed
+      apt: pkg=vim
       sudo: yes
 
   handlers:
