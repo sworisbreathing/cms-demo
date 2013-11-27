@@ -60,7 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # to create the playbooks directory and a playbook in the file
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/ansible/playbook.yml"
-    ansible.verbose = "v"
+    # ansible.verbose = "v"
   end
   
   # Enable provisioning with Puppet stand alone.  Puppet manifests
